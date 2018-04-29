@@ -1,11 +1,10 @@
 package by.neon.tour.model;
 
-import java.sql.Date;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.sql.Date;
+import java.util.Set;
 
 /**
  * @author Nikolay Moskal
@@ -34,9 +33,9 @@ public class Client {
     @JsonIgnore
     private Set<Order> orders;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.ALL)
     @JsonIgnore
-    private AuthUser authUser;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.ALL)
+    private Set<AuthUser> authUsers;
 
     /**
      * Builds a new object of Client
@@ -44,12 +43,12 @@ public class Client {
     public Client() {
     }
 
-    public AuthUser getAuthUser() {
-        return authUser;
+    public Set<AuthUser> getAuthUsers() {
+        return authUsers;
     }
 
-    public void setAuthUser(AuthUser authUser) {
-        this.authUser = authUser;
+    public void setAuthUsers(Set<AuthUser> authUsers) {
+        this.authUsers = authUsers;
     }
 
     /**
@@ -130,25 +129,16 @@ public class Client {
     }
 
     /**
-     * @param birthDate the birthdate to set
-     */
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    /**
      * @param date the birthdate in milliseconds to set
      */
     public void setBirthDate(long date) {
         this.birthDate = new Date(date);
     }
 
-    /** (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * @param birthDate the birthdate to set
      */
-    @Override
-    public String toString() {
-        return "Client [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-                + ", birthDate=" + birthDate + ", orders=" + orders + "]";
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 }

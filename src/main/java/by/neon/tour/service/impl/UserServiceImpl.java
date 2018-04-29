@@ -1,17 +1,17 @@
 package by.neon.tour.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
 import by.neon.tour.model.AuthUser;
+import by.neon.tour.model.Client;
 import by.neon.tour.model.JwtUser;
 import by.neon.tour.repository.AuthUserRepository;
 import by.neon.tour.repository.UserRepository;
 import by.neon.tour.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Nikolay Moskal
@@ -54,11 +54,28 @@ public class UserServiceImpl implements UserService {
     /**
      * (non-Javadoc)
      *
-     * @see by.neon.tour.service.UserService#getAll()
+     * @see by.neon.tour.service.UserService#getAll(int)
      */
     @Override
-    public List<AuthUser> getAll() {
-        return authUserRepository.findAll();
+    public List<AuthUser> getAll(int withClient) {
+        List<AuthUser> authUsers = null;
+        if (withClient == 0) {
+            authUsers = new ArrayList<>(0);
+            for (AuthUser u : authUserRepository.findAll()) {
+                u.setClient(null);
+                authUsers.add(u);
+            }
+        }
+        if (withClient == 1) {
+            List<AuthUser> userList = new ArrayList<>(0);
+            for (Object[] o : authUserRepository.getAuthUsersWithClient()) {
+                AuthUser user = (AuthUser) o[0];
+                user.setClient((Client) o[1]);
+                userList.add(user);
+            }
+            authUsers = userList;
+        }
+        return authUsers;
     }
 
     /**

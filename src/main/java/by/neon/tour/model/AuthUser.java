@@ -1,7 +1,5 @@
 package by.neon.tour.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 /**
@@ -24,9 +22,9 @@ public class AuthUser {
     @Column(name = "enabled")
     private boolean enabled;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
-    @JsonIgnore
+    //@JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     private Client client;
 
     /**

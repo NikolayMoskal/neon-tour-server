@@ -1,7 +1,9 @@
 package by.neon.tour.config;
 
-import javax.sql.DataSource;
-
+import by.neon.tour.config.jwt.JwtAuthenticationEntryPoint;
+import by.neon.tour.config.jwt.JwtAuthenticationFilter;
+import by.neon.tour.config.jwt.JwtLoginFilter;
+import by.neon.tour.config.jwt.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import by.neon.tour.config.jwt.JwtAuthenticationEntryPoint;
-import by.neon.tour.config.jwt.JwtAuthenticationFilter;
-import by.neon.tour.config.jwt.JwtLoginFilter;
-import by.neon.tour.config.jwt.JwtTokenUtils;
+import javax.sql.DataSource;
 
 /**
  * @author Nikolay Moskal
@@ -64,7 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.antMatchers("/user/signup").permitAll()
 					.antMatchers("/client/signup").permitAll()
 					.antMatchers("/tour/**").permitAll()
-					.antMatchers("/protected/**").hasRole("ADMIN")
+				.antMatchers("/user/**").hasRole("ADMIN")
+				.antMatchers("/client/**").hasRole("ADMIN")
 					.anyRequest().authenticated()
 					.and()
 				.addFilterBefore(new JwtLoginFilter("/login", authenticationManager(), tokenUtils),

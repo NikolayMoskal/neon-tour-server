@@ -1,9 +1,9 @@
 package by.neon.tour.service;
 
-import java.util.List;
-
 import by.neon.tour.model.AuthUser;
 import by.neon.tour.model.JwtUser;
+
+import java.util.List;
 
 /**
  * @author Nikolay Moskal
@@ -21,9 +21,10 @@ public interface UserService {
     JwtUser saveWithAuthorities(JwtUser user);
 
     /**
+     * @param withClient
      * @return List
      */
-    List<AuthUser> getAll();
+    List<AuthUser> getAll(int withClient);
 
     /**
      * @param id

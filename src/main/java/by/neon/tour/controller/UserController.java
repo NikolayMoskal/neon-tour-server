@@ -3,22 +3,17 @@
  */
 package by.neon.tour.controller;
 
-import java.util.List;
-
+import by.neon.tour.model.AuthUser;
+import by.neon.tour.model.JwtUser;
+import by.neon.tour.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import by.neon.tour.model.AuthUser;
-import by.neon.tour.model.JwtUser;
-import by.neon.tour.service.UserService;
+import java.util.List;
 
 /**
  * @author Nikolay Moskal
@@ -32,15 +27,15 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @RequestMapping(value = {"/get/all"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AuthUser> getAllUsers() {
+    @RequestMapping(value = {"/get/all"}, method = RequestMethod.GET)
+    public List<AuthUser> getAllUsers(@RequestParam(name = "c") int withClient) {
         logger.info("Getting all users...");
-        return userService.getAll();
+        return userService.getAll(withClient);
     }
 
     @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
-    public AuthUser getByUsername(@RequestParam(name = "name", required = true) String username) {
-        if (username == "") {
+    public AuthUser getByUsername(@RequestParam(name = "name") String username) {
+        if (username.equals("")) {
             logger.error("Empty user name!");
             return null;
         }
