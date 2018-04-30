@@ -28,9 +28,9 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = {"/get/all"}, method = RequestMethod.GET)
-    public List<AuthUser> getAllUsers(@RequestParam(name = "c") int withClient) {
+    public List<AuthUser> getAllUsers() {
         logger.info("Getting all users...");
-        return userService.getAll(withClient);
+        return userService.getAll();
     }
 
     @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
@@ -67,10 +67,10 @@ public class UserController {
     public AuthUser updateUser(@RequestBody AuthUser user) {
         AuthUser exist = userService.getById(user.getId());
         if (exist == null) {
-            logger.error("Unable to update. The userby username \"" + user.getUsername() + "\" isn't found.");
+            logger.error("Unable to update. The user by username \"" + user.getUsername() + "\" isn't found.");
             return null;
         }
-        exist.setPassword(user.getPassword());
+        exist.setPassword(passwordEncoder.encode(user.getPassword()));
         exist.setEnabled(user.isEnabled());
         AuthUser updated = userService.save(exist);
         logger.info("The user was updated successfully");
@@ -78,13 +78,14 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)
-    public void deleteUser(@RequestBody AuthUser user) {
-        AuthUser exist = userService.getById(user.getId());
+    public void deleteUser(@RequestParam(name = "id") int id) {
+        AuthUser exist = userService.getById(id);
         if (exist == null) {
-            logger.error("Unable to delete. The user by username \"" + user.getUsername() + "\" isn't found.");
+            logger.error("Unable to delete. The user isn't found.");
+            return;
         }
-        userService.delete(user);
-        logger.info("The user by username \"" + user.getUsername() + "\" was deleted successfully.");
+        userService.delete(exist);
+        logger.info("The user by username \"" + exist.getUsername() + "\" was deleted successfully.");
     }
 
     @RequestMapping(value = {"/delete/all"}, method = RequestMethod.DELETE)

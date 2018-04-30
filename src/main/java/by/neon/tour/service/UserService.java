@@ -21,10 +21,9 @@ public interface UserService {
     JwtUser saveWithAuthorities(JwtUser user);
 
     /**
-     * @param withClient
      * @return List
      */
-    List<AuthUser> getAll(int withClient);
+    List<AuthUser> getAll();
 
     /**
      * @param id

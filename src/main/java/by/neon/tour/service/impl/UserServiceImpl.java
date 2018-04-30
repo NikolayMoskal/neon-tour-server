@@ -54,28 +54,17 @@ public class UserServiceImpl implements UserService {
     /**
      * (non-Javadoc)
      *
-     * @see by.neon.tour.service.UserService#getAll(int)
+     * @see by.neon.tour.service.UserService#getAll()
      */
     @Override
-    public List<AuthUser> getAll(int withClient) {
-        List<AuthUser> authUsers = null;
-        if (withClient == 0) {
-            authUsers = new ArrayList<>(0);
-            for (AuthUser u : authUserRepository.findAll()) {
-                u.setClient(null);
-                authUsers.add(u);
-            }
+    public List<AuthUser> getAll() {
+        List<AuthUser> userList = new ArrayList<>(0);
+        for (Object[] o : authUserRepository.getAuthUsersWithClient()) {
+            AuthUser user = (AuthUser) o[0];
+            user.setClient((Client) o[1]);
+            userList.add(user);
         }
-        if (withClient == 1) {
-            List<AuthUser> userList = new ArrayList<>(0);
-            for (Object[] o : authUserRepository.getAuthUsersWithClient()) {
-                AuthUser user = (AuthUser) o[0];
-                user.setClient((Client) o[1]);
-                userList.add(user);
-            }
-            authUsers = userList;
-        }
-        return authUsers;
+        return userList;
     }
 
     /**
