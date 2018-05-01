@@ -53,14 +53,14 @@ public class ClientController {
             logger.debug("Find client by only first-name...");
             client = clientService.getByFirstName(firstName);
         } else if (lastName != null) {
-            logger.debug("Find client by only last-name");
+            logger.debug("Find client by only last-name...");
             client = clientService.getByLastName(lastName);
         }
         if (client == null) {
             logger.info("No client found!");
             return new Client();
         } else {
-            logger.info("The client is found. Send reply from the server...");
+            logger.info("The client is found. Send reply from the server.");
             return client;
         }
     }
@@ -81,7 +81,7 @@ public class ClientController {
         logger.info("The client was created successfully.");
         AuthUser user = userController.addUser(new AuthUser(created.getId(), data.getUsername(), data.getPassword()));
         if (user != null)
-            logger.info("The user for client was created successfully");
+            logger.info("The user for client was created successfully.");
         return created;
     }
 
@@ -95,7 +95,7 @@ public class ClientController {
     public Client updateUser(@RequestBody Client client) {
         Client exist = clientService.getById(client.getId());
         if (exist == null) {
-            logger.error("Client by id " + client.getId() + " isn't found");
+            logger.error("Client by id " + client.getId() + " isn't found.");
             return null;
         }
         exist.setFirstName(client.getFirstName());
@@ -108,14 +108,14 @@ public class ClientController {
     }
 
     @RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)
-    public void delete(@RequestBody Client client) {
-        Client exist = clientService.getById(client.getId());
+    public void delete(@RequestParam(name = "id") int id) {
+        Client exist = clientService.getById(id);
         if (exist == null) {
-            logger.error("Unable to delete. Client by id " + client.getId() + " isn't found.");
+            logger.error("Unable to delete. The client isn't found.");
             return;
         }
         clientService.deleteClient(exist);
-        logger.info("The client by id " + exist.getId() + " was deleted successfully");
+        logger.info("The client by id " + exist.getId() + " was deleted successfully.");
     }
 
     @RequestMapping(value = {"/delete/all"}, method = RequestMethod.DELETE)

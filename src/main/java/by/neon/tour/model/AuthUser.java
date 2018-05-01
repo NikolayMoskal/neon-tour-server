@@ -25,7 +25,6 @@ public class AuthUser {
     @Column(name = "enabled")
     private boolean enabled;
 
-    //@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     private Client client;

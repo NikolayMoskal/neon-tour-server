@@ -44,7 +44,7 @@ public class UserController {
             logger.error("User by username \"" + username + "\" isn't found.");
             return null;
         }
-        logger.info("The user is found. Send reply from server");
+        logger.info("The user is found. Send reply from server.");
         return user;
     }
 
@@ -73,7 +73,7 @@ public class UserController {
         exist.setPassword(passwordEncoder.encode(user.getPassword()));
         exist.setEnabled(user.isEnabled());
         AuthUser updated = userService.save(exist);
-        logger.info("The user was updated successfully");
+        logger.info("The user was updated successfully.");
         return updated;
     }
 
