@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CityFromRepository extends JpaRepository<CityFrom, Integer> {
-    @Query("SELECT o FROM CountryFrom c JOIN c.cities o WHERE c.name = :country")
+    @Query("SELECT o FROM CountryFrom c JOIN c.cities o WHERE LOWER(c.name) = LOWER(:country)")
     List<CityFrom> findByCountry(@Param("country") String countryName);
 }

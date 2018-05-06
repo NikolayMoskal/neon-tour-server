@@ -2,10 +2,9 @@ package by.neon.tour.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.Set;
-
-import javax.persistence.*;
 
 /**
  * @author Nikolay Moskal
@@ -38,7 +37,6 @@ public class Tour {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
-    @JsonIgnore
     private Hotel hotel;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -2,6 +2,7 @@ package by.neon.tour.service;
 
 import by.neon.tour.model.*;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface TourService {
@@ -58,4 +59,35 @@ public interface TourService {
      * @return
      */
     List<Location> getLocations(String countryTo);
+
+    /**
+     * @return
+     */
+    List<Currency> getCurrencies();
+
+    /**
+     * @param start
+     * @param end
+     * @return
+     */
+    List<Tour> getByDate(Date start, Date end);
+
+    /**
+     * @param from
+     * @param to
+     * @return
+     */
+    List<Tour> getByPrice(Integer from, Integer to);
+
+    /**
+     * @param name
+     * @return
+     */
+    Tour getByName(String name);
+
+    /**
+     * @param hotelName
+     * @return
+     */
+    List<Tour> getByHotel(String hotelName);
 }

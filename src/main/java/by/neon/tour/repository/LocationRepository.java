@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Integer> {
-    @Query("SELECT l FROM CountryTo c JOIN c.locations l WHERE c.countryName = :country")
+    @Query("SELECT l FROM CountryTo c JOIN c.locations l WHERE LOWER(c.countryName) = LOWER(:country)")
     List<Location> getLocationByCountry(@Param("country") String country);
 }

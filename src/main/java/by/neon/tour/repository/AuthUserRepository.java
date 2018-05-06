@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Repository
 public interface AuthUserRepository extends JpaRepository<AuthUser, Integer> {
-    @Query("SELECT u FROM AuthUser u WHERE u.username = :username")
+    @Query("SELECT u FROM AuthUser u WHERE LOWER(u.username) = LOWER(:username)")
     AuthUser getByUsername(@Param("username") String username);
 
     @Query(value = "SELECT u, c FROM AuthUser u INNER JOIN u.client c")

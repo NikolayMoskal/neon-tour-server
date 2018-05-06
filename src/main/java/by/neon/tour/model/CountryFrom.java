@@ -16,8 +16,10 @@ public class CountryFrom {
     @Column(name = "name", length = 20)
     private String name;
 
-    @Column(name = "currency", length = 5)
-    private String currency;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency", referencedColumnName = "crn_name")
+    private Currency currency;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "countryFrom", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -53,11 +55,11 @@ public class CountryFrom {
         this.name = name;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 }

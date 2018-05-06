@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ public class TourController {
     private TourService tourService;
 
     @RequestMapping(value = {"/from/location"}, method = RequestMethod.GET)
-    public List<CityFrom> getCityList(@RequestParam("country") String countryFrom) {
+    public List<CityFrom> getCityList(@RequestParam(name = "country", required = false) String countryFrom) {
         return tourService.getCityList(countryFrom);
     }
 
@@ -63,5 +64,27 @@ public class TourController {
                 return null;
             }
         }
+    }
+
+    @RequestMapping(value = "/currency/all", method = RequestMethod.GET)
+    public List<Currency> getCurrencies() {
+        return tourService.getCurrencies();
+    }
+
+    @RequestMapping(value = "/get/date", method = RequestMethod.GET)
+    public List<Tour> getTours(@RequestParam(name = "from", required = false) Long from,
+                               @RequestParam(name = "to", required = false) Long to) {
+        return tourService.getByDate(from == null ? null : new Date(from), to == null ? null : new Date(to));
+    }
+
+    @RequestMapping(value = "/get/price", method = RequestMethod.GET)
+    public List<Tour> getTours(@RequestParam(name = "from", required = false) Integer from,
+                               @RequestParam(name = "to", required = false) Integer to) {
+        return tourService.getByPrice(from, to);
+    }
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public List<Tour> getTours(@RequestParam(name = "hotel") String hotelName) {
+        return tourService.getByHotel(hotelName);
     }
 }
