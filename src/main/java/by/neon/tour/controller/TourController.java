@@ -71,16 +71,17 @@ public class TourController {
         return tourService.getCurrencies();
     }
 
-    @RequestMapping(value = "/get/date", method = RequestMethod.GET)
-    public List<Tour> getTours(@RequestParam(name = "from", required = false) Long from,
-                               @RequestParam(name = "to", required = false) Long to) {
-        return tourService.getByDate(from == null ? null : new Date(from), to == null ? null : new Date(to));
+    @RequestMapping(value = "/get/price", method = RequestMethod.GET)
+    public List<Tour> getTours(@RequestParam(name = "from", required = false) Integer priceFrom,
+                               @RequestParam(name = "to", required = false) Integer priceTo) {
+        return tourService.getByPrice(priceFrom, priceTo);
     }
 
-    @RequestMapping(value = "/get/price", method = RequestMethod.GET)
-    public List<Tour> getTours(@RequestParam(name = "from", required = false) Integer from,
-                               @RequestParam(name = "to", required = false) Integer to) {
-        return tourService.getByPrice(from, to);
+    @RequestMapping(value = "/get/date", method = RequestMethod.GET)
+    public List<Tour> getTours(@RequestParam(name = "from", required = false) Long dateFrom,
+                               @RequestParam(name = "to", required = false) Long dateTo) {
+        return tourService.getByDate(dateFrom != null ? new Date(dateFrom) : null,
+                dateTo != null ? new Date(dateTo) : null);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)

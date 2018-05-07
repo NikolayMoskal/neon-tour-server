@@ -1,6 +1,7 @@
 package by.neon.tour.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -11,6 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "tours")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Tour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,16 +35,12 @@ public class Tour {
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tour")
+    @JsonIgnore
     private Set<Order> orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
     private Hotel hotel;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dscnt_id", referencedColumnName = "dscnt_id")
-    @JsonIgnore
-    private Discount discount;
 
     /**
      * Builds a new object of Tour
@@ -146,14 +144,6 @@ public class Tour {
      */
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
-    }
-
-    public Discount getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
     }
 
     public Hotel getHotel() {
