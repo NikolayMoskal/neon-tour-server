@@ -3,9 +3,10 @@
  */
 package by.neon.tour.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 /**
  * @author Nikolay Moskal
@@ -18,6 +19,9 @@ public class Order {
     @Column(name = "order_id")
     private int id;
 
+    @Column(name = "date")
+    private Date date;
+
     @Column(name = "notes", length = 300)
     private String notes;
 
@@ -26,12 +30,11 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tour_id", referencedColumnName = "tour_id")
-    @JsonIgnore
     private Tour tour;
 
     /**
@@ -40,8 +43,23 @@ public class Order {
     public Order() {
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public boolean isStateOrder() {
         return stateOrder;
+    }
+
+    /**
+     * @param stateOrder the stateOrder to set
+     */
+    public void setStateOrder(boolean stateOrder) {
+        this.stateOrder = stateOrder;
     }
 
     public Tour getTour() {
@@ -92,19 +110,5 @@ public class Order {
      */
     public void setClient(Client client) {
         this.client = client;
-    }
-
-    /**
-     * @return the stateOrder
-     */
-    public boolean getStateOrder() {
-        return stateOrder;
-    }
-
-    /**
-     * @param stateOrder the stateOrder to set
-     */
-    public void setStateOrder(boolean stateOrder) {
-        this.stateOrder = stateOrder;
     }
 }

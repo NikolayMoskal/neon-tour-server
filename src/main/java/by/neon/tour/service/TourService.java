@@ -90,4 +90,9 @@ public interface TourService {
      * @return
      */
     List<Tour> getByHotel(String hotelName);
+
+    /**
+     * @return
+     */
+    List<Tour> getAll();
 }

@@ -8,6 +8,7 @@ import by.neon.tour.model.AuthorizationData;
 import by.neon.tour.model.Client;
 import by.neon.tour.model.Order;
 import by.neon.tour.service.ClientService;
+import by.neon.tour.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +28,61 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
     @Autowired
+    private OrderService orderService;
+    @Autowired
     private UserController userController;
 
-    @RequestMapping(value = {"/orders"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/orders/get"}, method = RequestMethod.GET)
     public List<Order> getClientOrders(@RequestParam("id") int id) {
         logger.debug("Getting all orders by specified client ID...");
-        List<Order> orders = clientService.getAllOrders(clientService.getById(id));
+        List<Order> orders = orderService.getAllOrders(clientService.getById(id));
         if (orders == null) {
             logger.info("No orders found!");
             return new ArrayList<>();
         } else {
             logger.info("Sent the order list to client side");
             return orders;
+        }
+    }
+
+    @RequestMapping(value = {"/orders/add"}, method = RequestMethod.POST)
+    public Order addOrder(@RequestBody Order order) {
+        List<Order> exist = orderService.getById(order.getTour());
+        if (exist != null && exist.size() > 0) {
+            logger.error("The order with selected tour is already exists");
+            return null;
+        }
+        order.setStateOrder(true);
+        Order created = orderService.save(order);
+        logger.info("Order is created successfully.");
+        return created;
+    }
+
+    @RequestMapping(value = {"/orders/update"}, method = RequestMethod.PUT)
+    public Order updateOrder(@RequestBody Order order) {
+        Order exist = orderService.getById(order.getId());
+        if (exist == null) {
+            logger.error("Unable to update the order. It's not found.");
+            return null;
+        }
+        exist.setStateOrder(order.isStateOrder());
+        exist.setNotes(order.getNotes());
+        Order updated = orderService.save(exist);
+        logger.info("The order is updated successfully.");
+        return updated;
+    }
+
+    @RequestMapping(value = {"/orders/delete"}, method = RequestMethod.DELETE)
+    public void deleteOrder(@RequestParam("id") int id) {
+        orderService.delete(id);
+    }
+
+    @RequestMapping(value = {"/orders/delete/all"}, method = RequestMethod.DELETE)
+    public void deleteAllOrders(@RequestParam(value = "id", required = false) Integer clientId) {
+        if (clientId == null)
+            orderService.deleteAll();
+        else {
+            orderService.deleteAllOrdersByClient(clientService.getById(clientId));
         }
     }
 

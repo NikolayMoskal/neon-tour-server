@@ -1,19 +1,13 @@
 package by.neon.tour.service;
 
-import java.util.List;
-
 import by.neon.tour.model.Client;
-import by.neon.tour.model.Order;
+
+import java.util.List;
 
 /**
  * @author Nikolay Moskal
  */
 public interface ClientService {
-    /**
-     * @return List
-     */
-    List<Order> getAllOrders(Client client);
-
     /**
      * @param id
      * @return Client

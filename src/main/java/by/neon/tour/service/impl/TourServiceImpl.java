@@ -112,4 +112,9 @@ public class TourServiceImpl implements TourService {
     public List<Tour> getByHotel(String hotelName) {
         return tourRepository.getByHotel(hotelName);
     }
+
+    @Override
+    public List<Tour> getAll() {
+        return tourRepository.findAll();
+    }
 }

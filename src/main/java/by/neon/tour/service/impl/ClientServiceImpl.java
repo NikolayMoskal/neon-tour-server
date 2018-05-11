@@ -1,14 +1,12 @@
 package by.neon.tour.service.impl;
 
-import java.util.List;
-
+import by.neon.tour.model.Client;
+import by.neon.tour.repository.ClientRepository;
+import by.neon.tour.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import by.neon.tour.model.Client;
-import by.neon.tour.model.Order;
-import by.neon.tour.repository.ClientRepository;
-import by.neon.tour.service.ClientService;
+import java.util.List;
 
 /**
  * @author Nikolay Moskal
@@ -17,16 +15,6 @@ import by.neon.tour.service.ClientService;
 public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientRepository clientRepository;
-
-    /**
-     * (non-Javadoc)
-     *
-     * @see by.neon.tour.service.ClientService#getAllOrders(by.neon.tour.model.Client)
-     */
-    @Override
-    public List<Order> getAllOrders(Client client) {
-        return clientRepository.findAllOrders(client);
-    }
 
     /**
      * (non-Javadoc)

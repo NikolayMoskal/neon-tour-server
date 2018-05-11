@@ -88,4 +88,9 @@ public class TourController {
     public List<Tour> getTours(@RequestParam(name = "hotel") String hotelName) {
         return tourService.getByHotel(hotelName);
     }
+
+    @RequestMapping(value = "/get/all", method = RequestMethod.GET)
+    public List<Tour> getTours() {
+        return tourService.getAll();
+    }
 }
